@@ -126,3 +126,25 @@ then next time you can run
 python src/simulator.py
 ```
 
+## Setup consumer venv
+```
+cd ~/telemetry-pipeline/consumer
+
+python3 -m venv .venv
+```
+
+activate
+```
+source .venv/bin/activate
+```
+
+Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+Run the 
+```
+
+```
