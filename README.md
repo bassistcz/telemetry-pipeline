@@ -144,7 +144,23 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Run the 
+To store the username and password
+add the file
+```
+simulator/.env
 ```
 
+with the following:
+```
+MQTT_BROKER=localhost
+MQTT_PORT=1883
+MQTT_TOPIC=building/room1/temperature
+MQTT_CLIENT_ID=consumer
+MQTT_USERNAME=<user>
+MQTT_PASSWORD=<password>
+```
+
+Run the 
+```
+python src/main.py
 ```
