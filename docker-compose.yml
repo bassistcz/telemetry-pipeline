@@ -1,0 +1,22 @@
+services:
+  # mosquitto eclipse-mosquitto
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - "1883:1883" #default mqtt port
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:rw
+      - ./mosquitto/data:/mosquitto/data:rw
+      - ./mosquitto/log:/mosquitto/log:rw
+    restart: unless-stopped
+
+# volumes for mapping data,config and log
+# volumes:
+#   config:
+#   data:
+#   log:
+
+# networks:
+#   default:
+#     name: mosquitto-network

@@ -1,8 +1,8 @@
 # Initial Commits
 
-Initial repository structure
+Initial repository structure [Done]
 
-Add Docker Compose with Mosquitto
+Add Docker Compose with Mosquitto [Done]
 
 Add sensor simulator
 
