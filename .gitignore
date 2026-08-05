@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# Mosquitto runtime state
+mosquitto/data/
+mosquitto/log/
+
+# Mosquitto secrets
+mosquitto/config/pwfile
+
 # Distribution / packaging
 .Python
 build/
