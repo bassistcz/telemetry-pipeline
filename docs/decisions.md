@@ -4,7 +4,8 @@ Initial repository structure [Done]
 
 Add Docker Compose with Mosquitto [Done]
 
-Add sensor simulator
+Add sensor simulator [Done]
+- sensor.py can later be replaced with physical sensor
 
 Add MQTT consumer
 
