@@ -77,3 +77,52 @@ hello/topic hello MQTT
 ```
 print out in the first terminal.
 
+## Setup simulator venv
+```
+cd ~/telemetry-pipeline/simulator
+
+python3 -m venv .venv
+```
+
+activate
+```
+source .venv/bin/activate
+```
+
+Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+Run
+```
+python src/simulator.py
+```
+
+## Test simulator venv
+
+```
+export MQTT_USERNAME=<username>
+export MQTT_PASSWORD=<password>
+
+python src/simulator.py
+```
+
+To store the username and password
+add the file
+```
+simulator/.env
+```
+
+with the following:
+```
+MQTT_USERNAME=<user>
+MQTT_PASSWORD=<password>
+```
+
+then next time you can run
+```
+python src/simulator.py
+```
+
