@@ -7,7 +7,7 @@ Add Docker Compose with Mosquitto [Done]
 Add sensor simulator [Done]
 - sensor.py can later be replaced with physical sensor
 
-Add MQTT consumer
+Add MQTT consumer [Done]
 
 Persist readings to SQLite
 

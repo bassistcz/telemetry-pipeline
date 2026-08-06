@@ -7,7 +7,7 @@ Clone repo
 Run
 
 ```
- sudo docker compose -p mqtt5 up -d
+ sudo docker compose -p mosquitto up -d
 ```
 
 test if broker is up, by running
