@@ -7,7 +7,7 @@ Clone repo
 Run
 
 ```
- sudo docker compose -p mqtt5 up -d
+ sudo docker compose -p mosquitto up -d
 ```
 
 test if broker is up, by running
@@ -126,3 +126,41 @@ then next time you can run
 python src/simulator.py
 ```
 
+## Setup consumer venv
+```
+cd ~/telemetry-pipeline/consumer
+
+python3 -m venv .venv
+```
+
+activate
+```
+source .venv/bin/activate
+```
+
+Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+To store the username and password
+add the file
+```
+simulator/.env
+```
+
+with the following:
+```
+MQTT_BROKER=localhost
+MQTT_PORT=1883
+MQTT_TOPIC=building/room1/temperature
+MQTT_CLIENT_ID=consumer
+MQTT_USERNAME=<user>
+MQTT_PASSWORD=<password>
+```
+
+Run the 
+```
+python src/main.py
+```
