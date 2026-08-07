@@ -13,6 +13,11 @@ mosquitto/log/
 # Mosquitto secrets
 mosquitto/config/pwfile
 
+# SQLite runtime database
+*.db
+*.sqlite
+*.sqlite3
+
 # Distribution / packaging
 .Python
 build/
