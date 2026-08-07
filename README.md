@@ -1,90 +1,139 @@
-# telemetry-pipeline
-A small telemetry ingestion pipeline using MQTT, Python, SQLite and Docker.
+# Telemetry Pipeline
+A modular telemetry ingestion pipeline built with Python, MQTT, Docker, and SQLite.
 
-## Setup
-Clone repo
+The project is designed as a learning platform for modern software engineering practices, including message-driven architectures, IoT communication, data persistence, testing, and observability.
 
-Run
+## Features
+
+- Dockerised Mosquitto MQTT broker
+- Python telemetry simulator
+- MQTT consumer service
+- JSON schema validation
+- Modular project structure
+- Designed to support both simulated and physical sensors
+
+## Project Goal
+Build a modular telemetry platform capable of:
+
+- ingesting telemetry from simulated and physical sensors
+- validating incoming messages
+- storing telemetry for historical analysis
+- visualising system state
+- experimenting with reliability and fault injection
+- exploring Digital Twin concepts
+
+## Current Architecture
+```
++-------------+      MQTT      +-------------+      +-------------+
+| Simulator   | ─────────────▶ | Mosquitto   | ───▶ | Consumer    |
++-------------+                +-------------+      +-------------+
+                                                         │
+                                                         ▼
+                                                     Validation
+                                                         │
+                                                         ▼
+                                                      SQLite
+                                                         │
+                                                         ▼
+                                                Dashboard (planned)
+```
+
+## Current Status
+### Completed
+✅ Repository structure
+✅ Docker Compose environment
+✅ Mosquitto MQTT broker
+✅ Python sensor simulator
+✅ MQTT consumer
+✅ JSON schema validation
+✅ Sensor-specific schemas
+
+### In Progress
+🚧 SQLite persistence
+
+### Planned
+- Multiple sensor support
+- Structured logging
+- Unit testing
+- Grafana dashboards
+- Authentication
+- TLS
+- Fault injection
+
+## Repository Structure
 
 ```
- sudo docker compose -p mosquitto up -d
+telemetry-pipeline/
+├── consumer/          # MQTT consumer service
+├── database/          # Database scripts
+├── docs/              # Project documentation
+├── mosquitto/         # Mosquitto broker configuration
+├── simulator/         # Telemetry simulator
+├── tests/             # Tests
+├── docker-compose.yml # Local development environment
+├── README.md
+└── LICENSE
 ```
 
-test if broker is up, by running
-```
-$ docker ps
-```
 
-should see something like this
-```
-CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS         PORTS                                                                                NAMES
-740fcdb1bf79   eclipse-mosquitto    "/docker-entrypoint.…"   7 seconds ago   Up 6 seconds   0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp                                          mosquitto
-```
+## Prerequisites
+- Docker
+- Python 3.11+
+- Git
 
-add a password
+## Quick Start
+
+Clone the repository.
 
 ```
-$ docker exec -it mosquitto sh
+git clone git@github.com:bassistcz/telemetry-pipeline.git
+cd telemetry-pipeline
 ```
 
-add password for user
+Start the MQTT broker.
+
+```
+docker compose up -d
+```
+
+Verify the broker is running.
+
+```
+docker ps
+```
+
+You should see the Mosquitto container running.
+
+### Configure MQTT Authentication (Optional)
+
+Open a shell inside the broker container.
+
+```
+docker exec -it mosquitto sh
+```
+
+Create a user.
+
 ```
 mosquitto_passwd /mosquitto/config/pwfile <username>
 ```
 
-restart container
-```
-sudo docker restart <container id>
-```
-
-## Test
-
-Install client
+Restart the broker.
 
 ```
-sudo apt install mosquitto-clients
+docker restart mosquitto
 ```
 
-### Start a topic
-Without authentication
-```
-mosquitto_sub -v -t 'hello/topic'
-```
+## Simulator
 
-With authentication
+Create a virtual environment.
 ```
-mosquitto_sub -h localhost -p 1883 -v -t 'hello/topic' -u <user> -P <password>
-```
-
-This will appear to hang until you publish a message.
-
-### Publish to the topic
-In a separate terminal run one of the following commands:
-
-Without authentication
-```
-mosquitto_pub -t 'hello/topic' -m 'hello MQTT'
-```
-
-With authentication
-```
-mosquitto_pub -t 'hello/topic' -m 'hello MQTT' -u <user> -P <password>
-```
-
-You should see
-```
-hello/topic hello MQTT
-```
-print out in the first terminal.
-
-## Setup simulator venv
-```
-cd ~/telemetry-pipeline/simulator
+cd simulator
 
 python3 -m venv .venv
 ```
 
-activate
+Activate it
 ```
 source .venv/bin/activate
 ```
@@ -95,45 +144,35 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Run
-```
-python src/simulator.py
-```
+Create a .env file 
 
-## Test simulator venv
-
-```
-export MQTT_USERNAME=<username>
-export MQTT_PASSWORD=<password>
-
-python src/simulator.py
-```
-
-To store the username and password
-add the file
 ```
 simulator/.env
 ```
 
-with the following:
+With the following:
 ```
 MQTT_USERNAME=<user>
 MQTT_PASSWORD=<password>
 ```
 
-then next time you can run
+Run the simulator with the command
+
 ```
 python src/simulator.py
 ```
 
-## Setup consumer venv
+## Consumer
+
+Create a virtual environment.
+
 ```
-cd ~/telemetry-pipeline/consumer
+cd consumer
 
 python3 -m venv .venv
 ```
 
-activate
+Activate it
 ```
 source .venv/bin/activate
 ```
@@ -144,10 +183,10 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-To store the username and password
-add the file
+Create a .env file 
+
 ```
-simulator/.env
+consumer/.env
 ```
 
 with the following:
@@ -160,7 +199,69 @@ MQTT_USERNAME=<user>
 MQTT_PASSWORD=<password>
 ```
 
-Run the 
+Run the consumer
 ```
 python src/main.py
 ```
+
+
+## Manual testing
+
+Install MQTT client tools
+
+```
+sudo apt install mosquitto-clients
+```
+
+Subscribe to a topic
+
+Without authentication
+```
+mosquitto_sub -v -t 'hello/topic'
+```
+
+With authentication
+```
+mosquitto_sub -h localhost -p 1883 -v -t 'hello/topic' -u <user> -P <password>
+```
+
+This will appear to hang until you publish a message.
+
+Publish a message
+
+In a separate terminal run one of the following commands:
+
+Without authentication
+```
+mosquitto_pub -t 'hello/topic' -m 'hello MQTT'
+```
+
+With authentication
+```
+mosquitto_pub -t 'hello/topic' -m 'hello MQTT' -u <user> -P <password>
+```
+
+The subscriber should receive:
+
+```
+hello/topic hello MQTT
+```
+
+
+## Documentation
+
+Additional project documentation can be found in the docs/ directory.
+
+- `ROADMAP.md` — planned milestones and future features
+- `docs/architecture.md` — system architecture
+- `docs/decisions.md` — technical decisions and rationale
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for planned milestones and future features.
+
+
+## License
+
+This project is licensed under the MIT License.
+

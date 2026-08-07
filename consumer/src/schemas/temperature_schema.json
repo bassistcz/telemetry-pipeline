@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sensor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sensor_type": {
+      "type": "string",
+      "const": "temperature"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string",
+      "const": "C"
+    }
+  },
+  "required": [
+    "version",
+    "sensor_id",
+    "sensor_type",
+    "timestamp",
+    "value",
+    "unit"
+  ],
+  "additionalProperties": false
+}
