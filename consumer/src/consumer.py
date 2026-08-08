@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 from validate import validate_message
 from jsonschema import ValidationError
 import json
+from persistence import store_reading
 
 from config import (
     MQTT_BROKER,
@@ -49,12 +50,11 @@ def process_message(payload):
     message = json.loads(payload)
 
     try:
-        validate_message(message)
+        if validate_message(message):
+            print("Valid telemetry:")
+            print(message)
 
-        print("Valid telemetry:")
-        print(message)
-
-        # store_reading(message)  # future SQLite storage
+            store_reading(message)  # future SQLite storage
 
     except json.JSONDecodeError:
         print("Invalid JSON received")
