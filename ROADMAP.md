@@ -67,12 +67,12 @@ Prove telemetry can flow end-to-end.
 
 Store validated telemetry for historical analysis.
 
-### Tasks
+### Completed
 
-- [ ] Design SQLite schema
-- [ ] Persist validated readings
-- [ ] Separate persistence into its own module
-- [ ] Add database abstraction layer
+- [x] Design SQLite schema
+- [x] Persist validated readings
+- [x] Separate persistence into its own module
+- [x] Add database abstraction layer
 
 ---
 

@@ -1,7 +1,9 @@
 from consumer import run
+from persistence import initialise_database
 
 
 def main():
+    initialise_database()
     run()
 
 
