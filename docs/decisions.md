@@ -150,7 +150,7 @@ Future services:
 
 # Decision 007 - SQLite for initial persistence
 
-**Status:** Proposed
+**Status:** Accepted
 
 ## Decision
 
