@@ -1,6 +1,10 @@
 import sqlite3
+import logging
+from pathlib import Path
 
-DB_PATH = "../database/readings.db"
+DB_PATH = Path(__file__).resolve().parent.parent.parent / "database" / "readings.db"
+
+logger = logging.getLogger(__name__)
 
 
 def connect_database():
@@ -13,6 +17,9 @@ def close_database(con):
 
 
 def initialise_database():
+
+    
+    logger.info("Initialising database...")
     
     con = connect_database()
     cur = con.cursor()
@@ -28,6 +35,7 @@ def initialise_database():
     )
 
     close_database(con)
+    logger.info("Database initialised successfully.")
 
 
 def store_reading(message):
@@ -40,6 +48,14 @@ def store_reading(message):
 
     con = connect_database()
     cur = con.cursor()
+
+    logger.info(
+                "Storing reading: sensor_id=%s, value=%s%s",
+                message["sensor_id"],
+                message["value"],
+                message["unit"]
+                )
+    logger.debug("Storing reading: %s", message)
 
     cur.execute(
         "INSERT INTO temp_readings VALUES (?, ?, ?, ?, ?, ?)",
