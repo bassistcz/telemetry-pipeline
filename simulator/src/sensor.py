@@ -1,6 +1,7 @@
 import random
 import datetime
 from simulator.src.config import MIN_TEMP, MAX_TEMP
+import uuid
 
 class TemperatureSensor:
     def __init__(self, sensor_id):
@@ -22,6 +23,7 @@ class TemperatureSensor:
         return {
             "version": 1,
             "sensor_id": self.sensor_id,
+            "reading_id": str(uuid.uuid4()),
             "sensor_type": "temperature",
             "timestamp": str(self.timestamp),
             "value": round(self.temperature, 2),

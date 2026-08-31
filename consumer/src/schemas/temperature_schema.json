@@ -9,6 +9,10 @@
       "type": "string",
       "minLength": 1
     },
+    "reading_id": {
+      "type": "string",
+      "format": "uuid"
+    },
     "sensor_type": {
       "type": "string",
       "const": "temperature"

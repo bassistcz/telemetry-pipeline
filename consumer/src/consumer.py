@@ -60,8 +60,9 @@ def process_message(payload):
     try:
         if validate_message(message):
             logger.info(
-                        "Valid telemetry received: sensor_id=%s, sensor_type=%s",
+                        "Valid telemetry received: sensor_id=%s, reading_id=%s, sensor_type=%s",
                         message["sensor_id"],
+                        message["reading_id"],
                         message["sensor_type"],
             )
             logger.debug("Telemetry message: %s", message)

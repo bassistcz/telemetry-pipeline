@@ -27,7 +27,8 @@ def initialise_database():
     cur.execute(
         """CREATE TABLE IF NOT EXISTS temp_readings(
             version INTEGER, 
-            sensor_id TEXT, 
+            sensor_id TEXT,
+            reading_id TEXT, 
             sensor_type TEXT, 
             timestamp TEXT, 
             value REAL, 
@@ -41,6 +42,7 @@ def initialise_database():
 def store_reading(message):
     version = message["version"]
     sensor_id = message["sensor_id"]
+    reading_id = message["reading_id"]
     sensor_type = message["sensor_type"]
     timestamp = message["timestamp"]
     value = message["value"]
@@ -50,16 +52,17 @@ def store_reading(message):
     cur = con.cursor()
 
     logger.info(
-                "Storing reading: sensor_id=%s, value=%s%s",
+                "Storing reading: sensor_id=%s, reading_id=%s, value=%s%s",
                 message["sensor_id"],
+                message["reading_id"],
                 message["value"],
                 message["unit"]
                 )
     logger.debug("Storing reading: %s", message)
 
     cur.execute(
-        "INSERT INTO temp_readings VALUES (?, ?, ?, ?, ?, ?)",
-        (version, sensor_id, sensor_type, timestamp, value, unit),
+        "INSERT INTO temp_readings VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (version, sensor_id, reading_id, sensor_type, timestamp, value, unit),
     )
 
     close_database(con)

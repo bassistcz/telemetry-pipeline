@@ -39,8 +39,9 @@ def publish_sensor_data(data):
     duration_ms = (time.monotonic() - start_time) * 1000
 
     logger.info(
-        "MQTT publish succeeded: sensor_id=%s topic=%s duration_ms=%.2f",
+        "MQTT publish succeeded: sensor_id=%s reading_id=%s topic=%s duration_ms=%.2f",
         data.get("sensor_id"),
+        data.get("reading_id"),
         TOPIC,
         duration_ms,
     )
