@@ -47,13 +47,13 @@ Build a modular telemetry platform capable of:
 ✅ MQTT consumer
 ✅ JSON schema validation
 ✅ Sensor-specific schemas
+✅ SQLite persistence
 
 ### In Progress
-🚧 SQLite persistence
+🚧 Structured logging
 
 ### Planned
 - Multiple sensor support
-- Structured logging
 - Unit testing
 - Grafana dashboards
 - Authentication
@@ -64,14 +64,18 @@ Build a modular telemetry platform capable of:
 
 ```
 telemetry-pipeline/
+├── config/            # Configuration files
 ├── consumer/          # MQTT consumer service
 ├── database/          # Database scripts
 ├── docs/              # Project documentation
+├── logs/              # Log files for testing and debug
 ├── mosquitto/         # Mosquitto broker configuration
 ├── simulator/         # Telemetry simulator
 ├── tests/             # Tests
+├── tools/             # Helper scripts
 ├── docker-compose.yml # Local development environment
 ├── README.md
+├── ROADMAP.md
 └── LICENSE
 ```
 
@@ -156,10 +160,10 @@ MQTT_USERNAME=<user>
 MQTT_PASSWORD=<password>
 ```
 
-Run the simulator with the command
+Run the simulator from the telemetry/ directory with the command
 
 ```
-python src/simulator.py
+python -m simulator.src.simulator
 ```
 
 ## Consumer
@@ -199,9 +203,9 @@ MQTT_USERNAME=<user>
 MQTT_PASSWORD=<password>
 ```
 
-Run the consumer
+Run the consumer from the telemetry/ directory 
 ```
-python src/main.py
+python -m consumer.src.main
 ```
 
 

@@ -1,6 +1,6 @@
 import random
 import datetime
-from config import MIN_TEMP, MAX_TEMP
+from simulator.src.config import MIN_TEMP, MAX_TEMP
 
 class TemperatureSensor:
     def __init__(self, sensor_id):
