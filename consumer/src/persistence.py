@@ -11,31 +11,28 @@ def connect_database():
     return sqlite3.connect(DB_PATH)
 
 
-def close_database(con):
-    con.commit()
-    con.close()
-
-
 def initialise_database():
-
-    
     logger.info("Initialising database...")
-    
-    con = connect_database()
-    cur = con.cursor()
 
-    cur.execute(
-        """CREATE TABLE IF NOT EXISTS temp_readings(
-            version INTEGER, 
-            sensor_id TEXT,
-            reading_id TEXT, 
-            sensor_type TEXT, 
-            timestamp TEXT, 
-            value REAL, 
-            unit TEXT)"""
-    )
+    with connect_database() as con:
+        cur = con.cursor()
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS temp_readings(
+                version INTEGER,
+                sensor_id TEXT,
+                reading_id TEXT NOT NULL,
+                sensor_type TEXT,
+                timestamp TEXT,
+                value REAL,
+                unit TEXT
+            )"""
+        )
 
-    close_database(con)
+        cur.execute(
+            """CREATE UNIQUE INDEX IF NOT EXISTS idx_temp_readings_reading_id
+            ON temp_readings(reading_id)"""
+        )
+
     logger.info("Database initialised successfully.")
 
 
@@ -48,21 +45,37 @@ def store_reading(message):
     value = message["value"]
     unit = message["unit"]
 
-    con = connect_database()
-    cur = con.cursor()
-
     logger.info(
-                "Storing reading: sensor_id=%s, reading_id=%s, value=%s%s",
-                message["sensor_id"],
-                message["reading_id"],
-                message["value"],
-                message["unit"]
-                )
-    logger.debug("Storing reading: %s", message)
-
-    cur.execute(
-        "INSERT INTO temp_readings VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (version, sensor_id, reading_id, sensor_type, timestamp, value, unit),
+        "Storing reading: sensor_id=%s, reading_id=%s, value=%s%s",
+        sensor_id,
+        reading_id,
+        value,
+        unit,
     )
+    logger.debug("Storing message: %s", message)
 
-    close_database(con)
+    with connect_database() as con:
+        cur = con.cursor()
+        cur.execute(
+            """
+            INSERT INTO temp_readings (
+                version,
+                sensor_id,
+                reading_id,
+                sensor_type,
+                timestamp,
+                value,
+                unit
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                version,
+                sensor_id,
+                reading_id,
+                sensor_type,
+                timestamp,
+                value,
+                unit,
+            ),
+        )

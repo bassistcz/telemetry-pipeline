@@ -32,6 +32,7 @@
   "required": [
     "version",
     "sensor_id",
+    "reading_id",
     "sensor_type",
     "timestamp",
     "value",

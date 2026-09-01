@@ -34,7 +34,6 @@ def on_message(client, userdata, message):
     logger.debug(f"[{message.topic}] {payload}")
 
     process_message(payload)
-    logger.info("Message processed successfully.")
 
 
 def create_client():
@@ -55,9 +54,9 @@ def create_client():
 
 
 def process_message(payload):
-    message = json.loads(payload)
 
     try:
+        message = json.loads(payload)
         if validate_message(message):
             logger.info(
                         "Valid telemetry received: sensor_id=%s, reading_id=%s, sensor_type=%s",
@@ -67,7 +66,9 @@ def process_message(payload):
             )
             logger.debug("Telemetry message: %s", message)
 
-            store_reading(message)  # future SQLite storage
+            store_reading(message)
+            
+            logger.info("Message processed successfully.")
 
     except json.JSONDecodeError:
         logger.error("Invalid JSON received")
